@@ -5,12 +5,17 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
+  StyleSheet,
+  StatusBar,
 } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/core";
 import useAuth from "../hooks/useAuth";
 import tw from "tailwind-rn";
 import { Ionicons } from "@expo/vector-icons";
+import Swiper from "react-native-deck-swiper";
+
+import { dummy } from "../db/dummy";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -23,13 +28,13 @@ const HomeScreen = () => {
   }, []);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={[tw(`flex-1 justify-center`), styles.container]}>
       {/* Header */}
-      <View style={tw("items-center relative")}>
+      <View style={tw("items-center relative flex  ")}>
         <TouchableOpacity style={tw("absolute left-5 top-3")} onPress={logout}>
           <Image
             style={tw("h-10 w-10 rounded-full")}
-            source={{ uri: user.photoURL }}
+            source={{ uri: user?.photoURL }}
           />
         </TouchableOpacity>
         <TouchableOpacity>
@@ -44,22 +49,21 @@ const HomeScreen = () => {
       </View>
       {/* End of Header */}
       {/* Home Swipe Stack Card */}
-      <View>
-        <Image
-          style={tw("m-2 self-center rounded-2xl w-11/12 h-5/6")}
-          source={{
-            uri: "https://www.kolpaper.com/wp-content/uploads/2020/11/Minimal-Mobile-Wallpaper.jpg",
-          }}
+      <View style={tw(`flex-1  mt-6`)}>
+        <Swiper
+          containerStyle={styles.swiper}
+          cards={dummy}
+          renderCard={(card) => (
+            <View style={tw(`bg-white h-3/4 rounded-xl `)}>
+              <Image src={{ uri: card.photoURL }} />
+              <Text>{card.first_name}</Text>
+            </View>
+          )}
         />
-        <Text
-          style={tw("absolute bottom-32 left-10 text-white font-bold text-xl")}
-        >
-          Oskar Klonowski
-        </Text>
       </View>
       {/* End of Home Swipe Stack Card */}
       {/* Bottom Controls */}
-      <View style={tw("flex flex-row justify-evenly ")}>
+      <View style={tw("flex flex-row justify-evenly items-center p-4")}>
         <TouchableOpacity
           style={tw(
             "items-center justify-center rounded-full w-16 h-16 bg-red-200"
@@ -79,5 +83,17 @@ const HomeScreen = () => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: StatusBar.currentHeight,
+  },
+  swiper: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "transparent",
+  },
+});
 
 export default HomeScreen;

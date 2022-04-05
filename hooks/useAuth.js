@@ -10,16 +10,15 @@ import {
 } from "@firebase/auth";
 import { auth } from "../firebase";
 import { useMemo } from "react";
+import { ANDROID_CLIENT_ID, IOS_CLIENT_ID } from "@env";
 
 const AuthContext = createContext({
   //Initial State of the Context
 });
 
 const config = {
-  androidClientId:
-    "244860282255-3idvtvcq8g52dle31cump43vpgbpp7tt.apps.googleusercontent.com",
-  iosClientId:
-    "244860282255-da0e0umjtanfi4hj5c9f3ft6685fsqb8.apps.googleusercontent.com",
+  androidClientId: ANDROID_CLIENT_ID,
+  iosClientId: IOS_CLIENT_ID,
   scopes: ["profile", "email"],
   permissions: ["public_profile", "email", "gender", "location"],
 };
@@ -55,6 +54,8 @@ export const AuthProvider = ({ children }) => {
             idToken,
             accessToken
           );
+          console.log(logInResult);
+
           await signInWithCredential(auth, credential);
         } else {
           //error...

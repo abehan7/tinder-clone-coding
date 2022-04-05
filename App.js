@@ -1,11 +1,18 @@
 // import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useEffect } from "react";
 // import tw from "tailwind-rn";
 import { NavigationContainer } from "@react-navigation/native";
-import StackNavigator from "./StackNavigator";
+import StackNavigator from "./components/StackNavigator";
 import { AuthProvider } from "./hooks/useAuth";
+import { getComments } from "./api";
 
 export default function App() {
+  useEffect(() => {
+    const fn = async () => {
+      await getComments();
+    };
+    fn();
+  }, []);
   return (
     <NavigationContainer>
       <AuthProvider>
@@ -14,17 +21,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-// <View style={tw("flex-1 justify-center items-center")}>
-// <Text>Hello World! NICE</Text>
-// <Button title="Click Me" />
-// <StatusBar style="auto" />
-// </View>
-
-// const styles = StyleSheet.create({
-// container: {
-// flex: 1,
-// backgroundColor: "#fff",
-// alignItems: "center",
-// justifyContent: "center",
-// },
-// });
